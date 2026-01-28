@@ -1,6 +1,7 @@
-const BASE_URL = window.location.pathname.split('/')[1]
-  ? '/' + window.location.pathname.split('/')[1]
-  : '';
+const BASE_URL =
+  location.hostname.endsWith('github.io')
+    ? '/blog'
+    : '';
 
 const postsContainer = document.getElementById('posts');
 
@@ -52,3 +53,4 @@ function renderPosts(posts) {
     postsContainer.appendChild(div);
   });
 }
+
