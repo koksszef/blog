@@ -4,9 +4,9 @@ const BASE_URL = window.location.pathname.split('/')[1]
 
 const postsContainer = document.getElementById('posts');
 
-loadCategory(`${BASE_URL}/posts/short/meta.json`);
-loadCategory(`${BASE_URL}/posts/long/meta.json`);
-loadCategory(`${BASE_URL}/posts/other/meta.json`);
+loadCategory(`${BASE_URL}/wpisy/bron-krotka/meta.json`);
+loadCategory(`${BASE_URL}/wpisy/bron-dluga/meta.json`);
+loadCategory(`${BASE_URL}/wpisy/inne/meta.json`);
 
 function loadCategory(path) {
   fetch(path)
@@ -29,4 +29,5 @@ function renderPosts(posts) {
     `;
     postsContainer.appendChild(div);
   });
+
 }
