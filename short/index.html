@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <script src="/js/header.js"></script>
+    <div class="container">
+        <!-- Treść strony -->
+        <h2 class="section-title">Broń krótka</h2>
+        <div id="short-posts" class="posts"></div>
+    </div>
+    <script>
+      fetch('posts/short/meta.json')
+      .then(r => r.json())
+      .then(posts => render(posts));
+      
+      
+      function render(posts) {
+      const c = document.getElementById('short-posts');
+      posts.forEach(p => {
+      c.innerHTML += `
+      <div class="post-card">
+      <h3>${p.title}</h3>
+      <a href="${p.path}">Czytaj więcej</a>
+      </div>`;
+      });
+      }
+      </script>
+    <script src="/js/footer.js"></script>
+</body>
+
+</html>

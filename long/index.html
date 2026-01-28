@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <script src="/js/header.js"></script>
+    <div class="container">
+        <!-- Treść strony -->
+        <h2 class="section-title">Broń długa</h2>
+        <div id="long-posts" class="posts"></div>
+    </div>
+    <script src="/js/footer.js"></script>
+    <script>
+      fetch('posts/long/meta.json')
+      .then(r => r.json())
+      .then(posts => render(posts));
+      
+      
+      function render(posts) {
+      const c = document.getElementById('long-posts');
+      posts.forEach(p => {
+      c.innerHTML += `
+      <div class="post-card">
+      <h3>${p.title}</h3>
+      <a href="${p.path}">Czytaj więcej</a>
+      </div>`;
+      });
+      }
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+:root {
+  --bg-dark: #1b1b1b;
+  --bg-darker: #111;
+  --brown: #7a4a2e;
+  --brown-light: #a36a3f;
+  --gray: #2a2a2a;
+  --border: #3a3a3a;
+  --text-light: #ffffff;
+  --text-muted: #bdbdbd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+
+header {
+  background: var(--bg-darker);
+  border-bottom: 2px solid var(--border);
+  padding: 20px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding: 15px 40px;
+  border: 2px solid var(--brown);
+  background: var(--gray);
+}
+
+nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  transition: background 0.3s, color 0.3s;
+}
+
+nav a:hover {
+  background: var(--brown);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--brown);
+  color: var(--brown-light);
+}
+
+.posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.post-card {
+  background: var(--gray);
+  border: 2px solid var(--border);
+  padding: 25px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.post-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--brown-light);
+}
+
+.post-card h3 {
+  margin-bottom: 10px;
+}
+
+.post-card p {
+  color: var(--text-muted);
+}
+
+.post-card a {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 14px;
+  border: 1px solid var(--brown-light);
+  color: var(--brown-light);
+  text-decoration: none;
+}
+
+.post-card a:hover {
+  background: var(--brown-light);
+  color: #000;
+}
+
+article {
+  background: var(--gray);
+  border: 2px solid var(--brown);
+  padding: 40px;
+}
+
+footer {
+  margin-top: 60px;
+  padding: 20px;
+  text-align: center;
+  border-top: 2px solid var(--border);
+  color: var(--text-muted);
+}
+
+.nav-link.active {
+  background: #a36a3f;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 5px;
+  }

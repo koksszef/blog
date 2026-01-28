@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <script src="/js/header.js"></script>
+    <div class="container">
+        <!-- Treść strony -->
+        <h2 class="section-title">Inne</h2>
+        <div id="other-posts" class="posts"></div>
+    </div>
+    <script>
+      fetch('posts/other/meta.json')
+      .then(r => r.json())
+      .then(posts => render(posts));
+      
+      
+      function render(posts) {
+      const c = document.getElementById('other-posts');
+      posts.forEach(p => {
+      c.innerHTML += `
+      <div class="post-card">
+      <h3>${p.title}</h3>
+      <a href="${p.path}">Czytaj więcej</a>
+      </div>`;
+      });
+      }
+      </script>
+    <script src="/js/footer.js"></script>
+</body>
+
+</html>
