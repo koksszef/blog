@@ -3,11 +3,11 @@ const header = document.createElement('header');
 header.innerHTML = `
 <nav>
 <ul>
-<li><a href="blog" class="nav-link">BLOG</a></li>
-<li><a href="bron-krotka" class="nav-link">Broń krótka</a></li>
-<li><a href="bron-dluga" class="nav-link">Broń długa</a></li>
-<li><a href="inne" class="nav-link">Inne</a></li>
-<li><a href="o-stronie" class="nav-link">O Stronie</a></li>
+<li><a href="../blog" class="nav-link">BLOG</a></li>
+<li><a href="../bron-krotka" class="nav-link">Broń krótka</a></li>
+<li><a href="../bron-dluga" class="nav-link">Broń długa</a></li>
+<li><a href="../inne" class="nav-link">Inne</a></li>
+<li><a href="../o-stronie" class="nav-link">O Stronie</a></li>
 </ul>
 </nav>
 `;
@@ -22,3 +22,4 @@ link.classList.add('active');
 }
 
 });
+
