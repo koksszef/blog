@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <script src="js/header.js"></script>
+    <script src="../js/header.js"></script>
     <div class="container">
         <!-- Treść strony -->
         <h2 class="section-title">Inne</h2>
         <div id="other-posts" class="posts"></div>
     </div>
     <script>
-      fetch('posts/other/meta.json')
+      fetch('../wpisy/inne/meta.json')
       .then(r => r.json())
       .then(posts => render(posts));
       
@@ -27,8 +27,9 @@
       });
       }
       </script>
-    <script src="js/footer.js"></script>
+    <script src="../js/footer.js"></script>
 </body>
 
 
 </html>
+
