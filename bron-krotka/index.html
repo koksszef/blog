@@ -11,7 +11,7 @@
         <div id="short-posts" class="posts"></div>
     </div>
     <script>
-      fetch('wpisy/bron-krotka/meta.json')
+      fetch('../wpisy/bron-krotka/meta.json')
       .then(r => r.json())
       .then(posts => render(posts));
       
@@ -32,4 +32,5 @@
 
 
 </html>
+
 
