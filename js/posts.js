@@ -31,6 +31,7 @@ function loadCategory(path) {
 
       // Once all categories are loaded, sort and render
       if (categoriesLoaded === categories.length) {
+        totalPosts = allPosts.length;
         renderPosts(allPosts);
       }
     })
@@ -53,4 +54,5 @@ function renderPosts(posts) {
     postsContainer.appendChild(div);
   });
 }
+
 
