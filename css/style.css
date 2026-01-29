@@ -70,7 +70,6 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
-  grid-template-rows: auto 1fr auto;
 }
 
 .post-card {
@@ -80,6 +79,8 @@ nav a:hover {
   transition: transform 0.3s, border-color 0.3s;
   word-wrap: break-word;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-card:hover {
@@ -125,7 +126,7 @@ nav a:hover {
 }
 .post-card a {
   display: inline-block;
-  margin-top: 15px;
+  margin-top: auto;
   padding: 8px 14px;
   border: 1px solid var(--brown-light);
   color: var(--brown-light);
@@ -158,6 +159,7 @@ footer {
   border-radius: 5px;
 
   }
+
 
 
 
