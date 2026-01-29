@@ -54,7 +54,7 @@ function renderPins(pins) {
       <p>Kategoria: ${pin.category}</p>
       <p>Wpis #: ${pin.number}</p>
       <h3></h3>
-      <a href="${PINS_BASE_URL}/${pin.path}">Czytaj więcej</a>
+      <a href="${PINS_BASE_URL}${pin.path}">Czytaj więcej</a>
     `;
     pinContainer.appendChild(div);
   });
