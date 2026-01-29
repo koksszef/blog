@@ -1,4 +1,4 @@
-const BASE_URL =
+const PINS_BASE_URL =
   location.hostname.endsWith('github.io')
     ? '/blog'
     : '';
@@ -10,9 +10,9 @@ const pinContainer = document.getElementById('pin');
 let allPins = [];
 let pinsLoaded = 0;
 const pinsCategories = [
-  `${BASE_URL}/wpisy/bron-krotka/meta.json`,
-  `${BASE_URL}/wpisy/bron-dluga/meta.json`,
-  `${BASE_URL}/wpisy/inne/meta.json`
+  `${PINS_BASE_URL}/wpisy/bron-krotka/meta.json`,
+  `${PINS_BASE_URL}/wpisy/bron-dluga/meta.json`,
+  `${PINS_BASE_URL}/wpisy/inne/meta.json`
 ];
 
 // Ładujemy wszystkie kategorie pinned posts
@@ -48,7 +48,7 @@ function renderPins(pins) {
       <h3>${pin.title}</h3>
       <p>Kategoria: ${pin.category}</p>
       <p>Wpis #: ${pin.number}</p>
-      <a href="${BASE_URL}/${pin.path}">Czytaj więcej</a>
+      <a href="${PINS_BASE_URL}/${pin.path}">Czytaj więcej</a>
     `;
     pinContainer.appendChild(div);
   });
