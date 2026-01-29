@@ -112,6 +112,8 @@ nav a:hover {
   border: 1px solid var(--border);
   background: #000;
   margin-bottom: 15px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .thumb img {
@@ -155,4 +157,5 @@ footer {
   border-radius: 5px;
 
   }
+
 
