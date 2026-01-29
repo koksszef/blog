@@ -59,11 +59,16 @@ function renderPosts(posts) {
       <p>Kategoria: ${post.category}</p>
       <p>Wpis #: ${post.number}</p>
       <br><br><br><br>
+      <p></p>
+      <p><br></p>
+      <p></p>
+      <h3></h3>
       <a href="${BASE_URL}${post.path}">Czytaj więcej</a>
     `;
     postsContainer.appendChild(div);
   });
 }
+
 
 
 
