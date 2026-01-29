@@ -11,6 +11,10 @@
         <div id="long-posts" class="posts"></div>
     </div>
     <script>
+        const BASE_URL =
+          location.hostname.endsWith('github.io')
+            ? '/blog'
+            : '';
       fetch('/wpisy/bron-dluga/meta.json')
       .then(r => r.json())
       .then(posts => render(posts));
@@ -19,8 +23,13 @@
       function render(posts) {
       const c = document.getElementById('long-posts');
       posts.forEach(p => {
+      let thumbnailHTML = '';
+      if (posts.thumbnail) {
+        thumbnailHTML = `<img src="${BASE_URL}/${posts.thumbnail}" alt="Miniaturka ${posts.title}">`;
+      }
       c.innerHTML += `
       <div class="post-card">
+      ${thumbnailHTML}
       <h3>${p.title}</h3>
       <a href="${"../"+p.path}">Czytaj więcej</a>
       </div>`;
@@ -31,6 +40,7 @@
 </body>
 
 </html>
+
 
 
 
