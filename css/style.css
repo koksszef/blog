@@ -71,7 +71,11 @@ nav a:hover {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
 }
-
+.pin {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
 .post-card {
   background: var(--gray);
   border: 2px solid var(--border);
@@ -160,6 +164,7 @@ footer {
   border-radius: 5px;
 
   }
+
 
 
 
