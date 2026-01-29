@@ -131,7 +131,6 @@ nav a:hover {
   border: 1px solid var(--brown-light);
   color: var(--brown-light);
   text-decoration: none;
-  padding-top: 15px;
   align-self: flex-start;
 }
 
@@ -161,6 +160,7 @@ footer {
   border-radius: 5px;
 
   }
+
 
 
 
