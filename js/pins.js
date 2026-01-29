@@ -6,7 +6,7 @@ const BASE_URL =
 // Kontener dla przypiętych postów
 const pinContainer = document.getElementById('pin');
 
-let allPosts = [];
+let allPins = [];
 let categoriesLoaded = 0;
 const categories = [
   `${BASE_URL}/wpisy/bron-krotka/meta.json`,
@@ -22,31 +22,31 @@ function loadCategory(path) {
       if (!res.ok) throw new Error('Nie można załadować ' + path);
       return res.json();
     })
-    .then(posts => {
-      allPosts = allPosts.concat(posts);
+    .then(pins => {
+      allPins = allPins.concat(pins);
       categoriesLoaded++;
 
       if (categoriesLoaded === categories.length) {
         // Filtrujemy tylko przypięte posty
-        const pinnedPosts = allPosts.filter(post => post.pin === 'yes');
-        renderPinnedPosts(pinnedPosts);
+        const pinnedPins = allPins.filter(pin => pin.pin === 'yes');
+        renderPins(pinnedPins);
       }
     })
     .catch(err => console.error(err));
 }
 
-function renderPinnedPosts(posts) {
+function renderPins(pins) {
   // Sortujemy wyłącznie po pinOrder w kolejności rosnącej
-  posts.sort((a, b) => (a.pinOrder || 0) - (b.pinOrder || 0));
+  pins.sort((a, b) => (a.pinOrder || 0) - (b.pinOrder || 0));
 
-  posts.forEach(post => {
+  pins.forEach(pin => {
     const div = document.createElement('div');
     div.className = 'post-card';
     div.innerHTML = `
-      <h3>${post.title}</h3>
-      <p>Kategoria: ${post.category}</p>
-      <p>Wpis #: ${post.number}</p>
-      <a href="${BASE_URL}/${post.path}">Czytaj więcej</a>
+      <h3>${pin.title}</h3>
+      <p>Kategoria: ${pin.category}</p>
+      <p>Wpis #: ${pin.number}</p>
+      <a href="${BASE_URL}/${pin.path}">Czytaj więcej</a>
     `;
     pinContainer.appendChild(div);
   });
