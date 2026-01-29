@@ -51,7 +51,7 @@ function renderPosts(posts) {
     div.className = 'post-card';
     let thumbnailHTML = '';
     if (post.thumbnail) {
-      thumbnailHTML = `<img src="${post.thumbnail}" alt="Miniaturka ${post.title}">`;
+      thumbnailHTML = `<div class="thumb"><img src="${post.thumbnail}" alt="Miniaturka ${post.title}"></div>`;
     }
     div.innerHTML = `
       ${thumbnailHTML}
@@ -63,6 +63,7 @@ function renderPosts(posts) {
     postsContainer.appendChild(div);
   });
 }
+
 
 
 
