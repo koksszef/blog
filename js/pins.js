@@ -44,7 +44,12 @@ function renderPins(pins) {
   pins.forEach(pin => {
     const div = document.createElement('div');
     div.className = 'post-card';
+    let PinsthumbnailHTML = '';
+    if (pins.thumbnail) {
+      PinsthumbnailHTML = `<img src="${PINS_BASE_URL}/${pins.thumbnail}" alt="Miniaturka ${pins.title}">`;
+    }
     div.innerHTML = `
+      ${PinsthumbnailHTML}
       <h3>${pin.title}</h3>
       <p>Kategoria: ${pin.category}</p>
       <p>Wpis #: ${pin.number}</p>
