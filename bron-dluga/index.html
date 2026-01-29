@@ -25,7 +25,7 @@
       posts.forEach(p => {
       let thumbnailHTML = '';
       if (posts.thumbnail) {
-        thumbnailHTML = `<img src="${BASE_URL}/${posts.thumbnail}" alt="Miniaturka ${posts.title}">`;
+        thumbnailHTML = `<img src="${posts.thumbnail}" alt="Miniaturka ${posts.title}">`;
       }
       c.innerHTML += `
       <div class="post-card">
@@ -40,6 +40,7 @@
 </body>
 
 </html>
+
 
 
 
