@@ -34,7 +34,7 @@ function loadCategory(path) {
         totalPosts = allPosts.length;
         const titleElement = document.getElementById('total-posts');
         if (titleElement) {
-          titleElement.textContent = `Liczba wszystkich wpistów: ${totalPosts}`;
+          titleElement.textContent = `Liczba wszystkich wpisów: ${totalPosts}`;
 }
         renderPosts(allPosts);
       }
@@ -49,7 +49,12 @@ function renderPosts(posts) {
   posts.forEach(post => {
     const div = document.createElement('div');
     div.className = 'post-card';
+    let thumbnailHTML = '';
+    if (post.thumbnail) {
+      thumbnailHTML = `<img src="${BASE_URL}/${post.thumbnail}" alt="Miniaturka ${post.title}">`;
+    }
     div.innerHTML = `
+      ${thumbnailHTML}
       <h3>${post.title}</h3>
       <p>Kategoria: ${post.category}</p>
       <p>Wpis #: ${post.number}</p>
@@ -58,6 +63,7 @@ function renderPosts(posts) {
     postsContainer.appendChild(div);
   });
 }
+
 
 
 
