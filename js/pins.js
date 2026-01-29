@@ -46,13 +46,14 @@ function renderPins(pins) {
     div.className = 'post-card';
     let PinsthumbnailHTML = '';
     if (pins.thumbnail) {
-      PinsthumbnailHTML = `<img src="${PINS_BASE_URL}/${pins.thumbnail}" alt="Miniaturka ${pins.title}">`;
+      PinsthumbnailHTML = `<img src="${PINS_BASE_URL}${pins.thumbnail}" alt="Miniaturka ${pins.title}">`;
     }
     div.innerHTML = `
       ${PinsthumbnailHTML}
       <h3>${pin.title}</h3>
       <p>Kategoria: ${pin.category}</p>
       <p>Wpis #: ${pin.number}</p>
+      <p></p>
       <a href="${PINS_BASE_URL}/${pin.path}">Czytaj więcej</a>
     `;
     pinContainer.appendChild(div);
