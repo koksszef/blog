@@ -6,17 +6,19 @@ const BASE_URL =
 // Kontener dla przypiętych postów
 const pinContainer = document.getElementById('pin');
 
+// Unikalne zmienne dla pinned posts
 let allPins = [];
-let categoriesLoaded = 0;
-const categories = [
+let pinsLoaded = 0;
+const pinsCategories = [
   `${BASE_URL}/wpisy/bron-krotka/meta.json`,
   `${BASE_URL}/wpisy/bron-dluga/meta.json`,
   `${BASE_URL}/wpisy/inne/meta.json`
 ];
 
-categories.forEach(path => loadCategory(path));
+// Ładujemy wszystkie kategorie pinned posts
+pinsCategories.forEach(path => loadPinsCategory(path));
 
-function loadCategory(path) {
+function loadPinsCategory(path) {
   fetch(path)
     .then(res => {
       if (!res.ok) throw new Error('Nie można załadować ' + path);
@@ -24,9 +26,9 @@ function loadCategory(path) {
     })
     .then(pins => {
       allPins = allPins.concat(pins);
-      categoriesLoaded++;
+      pinsLoaded++;
 
-      if (categoriesLoaded === categories.length) {
+      if (pinsLoaded === pinsCategories.length) {
         // Filtrujemy tylko przypięte posty
         const pinnedPins = allPins.filter(pin => pin.pin === 'yes');
         renderPins(pinnedPins);
