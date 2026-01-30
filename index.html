@@ -17,33 +17,29 @@
     height: 2000px; /* controls scroll length */
   }
   .ladowanie{
+    position: fixed;
     font-weight: bold;
     color: var(--brown-light);
     text-align: center;
   }
-  .fixed-ui{
+  header{
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 
   }
-
+  .container{
+      position: fixed;
+      text-align: center;
+  }
+        
 </style>
 </head>
 <body>
-    <div class="fixed-ui">
     <script src="/js/header.js"></script>
     <div class="container">
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
     <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
-    </div>
         <canvas id="adsCanvas"></canvas>
 <div class="spacer"></div>
 
@@ -157,6 +153,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
