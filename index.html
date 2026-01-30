@@ -130,24 +130,16 @@ function drawFrame(index) {
 let ticking = false;
 
 window.addEventListener("scroll", () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      const maxScroll =
-        document.body.scrollHeight - window.innerHeight;
+  const scrollTop = window.scrollY;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollFraction = scrollTop / maxScroll;
 
-      const scrollFraction =
-        window.scrollY / maxScroll;
+  currentFrame = Math.min(
+    frameCount - 1,
+    Math.floor(scrollFraction * frameCount)
+  );
 
-      currentFrame = Math.min(
-        frameCount - 1,
-        Math.floor(scrollFraction * frameCount)
-      );
-
-      drawFrame(currentFrame);
-      ticking = false;
-    });
-    ticking = true;
-  }
+  drawFrame(currentFrame);
 });
 
 // resize handler
@@ -163,3 +155,4 @@ preloadImages();
 
 
 </html>
+
