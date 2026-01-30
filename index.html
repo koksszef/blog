@@ -5,7 +5,7 @@
     <style>
   canvas {
     left: 50%;
-    bottom: 10%;
+    bottom: 8%;
     transform: translateX(-50%);
     display: block;
     position: fixed;
@@ -16,6 +16,11 @@
   .spacer {
     height: 2000px; /* controls scroll length */
   }
+  .ladowanie{
+    margin: auto;
+    width: 50%;
+    color: var(--brown-light);
+  }
 </style>
 </head>
 <body>
@@ -24,7 +29,7 @@
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
-    <div id="loader" class="section-title">Ładowanie zdjęć…</div>
+    <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
         <canvas id="adsCanvas"></canvas>
 <div class="spacer"></div>
 
@@ -138,6 +143,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
