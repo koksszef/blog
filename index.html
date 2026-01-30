@@ -3,19 +3,29 @@
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-  canvas {
-    left: 50%;
-    bottom: 8%;
-    transform: translateX(-50%);
-    display: block;
-    position: fixed;
-    width: 70vw;
-    height: 70vh;
-    pointer-events: none;
-  }
-  .spacer {
-    height: 2000px; /* controls scroll length */
-  }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+#scrollArea {
+  height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+canvas {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: 70vw;
+  height: 70vh;
+  pointer-events: none;
+}
+.spacer {
+  height: 400vh;
+}
   .ladowanie{
     position: fixed;
     font-weight: bold;
@@ -50,7 +60,10 @@
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
     <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
-        <canvas id="adsCanvas"></canvas>
+    <div id="scrollArea">
+  <canvas id="adsCanvas"></canvas>
+  <div class="spacer"></div>
+</div>
 <div class="spacer"></div>
 
 <script>
@@ -95,7 +108,8 @@ function preloadImages() {
       loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
       if (loadedImages === frameCount) {
         loader.style.display = "none";
-        drawFrame(0);
+        resizeCanvas();
+drawFrame(0);
       }
     };
     images.push(img);
@@ -129,14 +143,16 @@ function drawFrame(index) {
 // scroll handler
 let ticking = false;
 
-window.addEventListener("scroll", () => {
+const scrollArea = document.getElementById("scrollArea");
+
+scrollArea.addEventListener("scroll", () => {
   if (!ticking) {
     window.requestAnimationFrame(() => {
-      const maxScroll =
-        document.body.scrollHeight - window.innerHeight;
+const maxScroll =
+  scrollArea.scrollHeight - scrollArea.clientHeight;
 
-      const scrollFraction =
-        window.scrollY / maxScroll;
+const scrollFraction =
+  scrollArea.scrollTop / maxScroll;
 
       currentFrame = Math.min(
         frameCount - 1,
@@ -163,6 +179,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
