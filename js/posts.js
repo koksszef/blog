@@ -35,7 +35,7 @@ function loadCategory(path) {
         const titleElement = document.getElementById('total-posts');
         if (titleElement) {
           titleElement.innerHTML =
-  `Liczba wszystkich wpisów: <span class="total-posts">${totalPosts}</span>`;
+  `Liczba wszystkich wpisów: <span style="color:white">${totalPosts}</span>`;
 }
         renderPosts(allPosts);
       }
@@ -65,6 +65,7 @@ function renderPosts(posts) {
     postsContainer.appendChild(div);
   });
 }
+
 
 
 
