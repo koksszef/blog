@@ -3,24 +3,19 @@
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-#scrollArea {
-  height: 100vh;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-
-canvas {
-  position: fixed;
-  left: 50%;
-  bottom: 8%;
-  transform: translateX(-50%);
-  width: 70vw;
-  height: 70vh;
-  pointer-events: none;
-}
-.spacer {
-  height: 400vh;
-}
+  canvas {
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+    display: block;
+    position: fixed;
+    width: 70vw;
+    height: 70vh;
+    pointer-events: none;
+  }
+  .spacer {
+    height: 6000px; /* controls scroll length */
+  }
   .ladowanie{
     position: fixed;
     font-weight: bold;
@@ -55,10 +50,7 @@ canvas {
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
     <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
-    <div id="scrollArea">
-  <canvas id="adsCanvas"></canvas>
-  <div class="spacer"></div>
-</div>
+        <canvas id="adsCanvas"></canvas>
 <div class="spacer"></div>
 
 <script>
@@ -80,8 +72,11 @@ let currentFrame = 0;
 // resize canvas to device pixels
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
+  const rect = canvas.getBoundingClientRect();
+
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 resizeCanvas();
@@ -95,15 +90,14 @@ function preloadImages() {
       String(i).padStart(padLength, "0") +
       fileExtension;
 
-    img.onload = () => {
-      loadedImages++;
-      loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
-      if (loadedImages === frameCount) {
+img.decode().then(() => {
+    loadedImages++;
+    loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
+    if (loadedImages === frameCount) {
         loader.style.display = "none";
-        resizeCanvas();
-drawFrame(0);
-      }
-    };
+        drawFrame(0);
+    }
+});
     images.push(img);
   }
 }
@@ -135,16 +129,14 @@ function drawFrame(index) {
 // scroll handler
 let ticking = false;
 
-const scrollArea = document.getElementById("scrollArea");
-
-scrollArea.addEventListener("scroll", () => {
+window.addEventListener("scroll", () => {
   if (!ticking) {
     window.requestAnimationFrame(() => {
-const maxScroll =
-  scrollArea.scrollHeight - scrollArea.clientHeight;
+      const maxScroll =
+        document.body.scrollHeight - window.innerHeight;
 
-const scrollFraction =
-  scrollArea.scrollTop / maxScroll;
+      const scrollFraction =
+        window.scrollY / maxScroll;
 
       currentFrame = Math.min(
         frameCount - 1,
