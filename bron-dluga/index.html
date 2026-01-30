@@ -20,10 +20,10 @@
       const c = document.getElementById('long-posts');
       posts.sort((a, b) => b.number - a.number);
       posts.forEach(p => {
-      let thumbnailHTML = '';
+      let thumbnailHTML = 'simea';
       if (posts.thumbnail) {
         console.log("Hello world!"); 
-        thumbnailHTML = `<div class="thumb"><img src="${post.thumbnail}" alt="Miniaturka ${post.title}"></div>`;
+        thumbnailHTML = `<div class="thumb"><img src="${posts.thumbnail}" alt="Miniaturka ${posts.title}"></div>`;
       }
       c.innerHTML += `
       <div class="post-card">
@@ -38,6 +38,7 @@
 </body>
 
 </html>
+
 
 
 
