@@ -1,38 +1,38 @@
 canvas {
       margin: 50px auto 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    position: fixed;
-    width: 70vw;
-    height: 70vh;
-    pointer-events: none;
-  }
-  .spacer {
-    height: calc(100vh + 60 * 20px);
-  }
-  .ladowanie{
-    position: fixed;
-    font-weight: bold;
-    color: var(--brown-light);
-    text-align: center;
-          left: 50%;
-    bottom: 50%;
-    transform: translate(-50%, -50%);
-  }
-  header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  }
-  .container{
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: block;
+      position: fixed;
+      width: 70vw;
+      height: 70vh;
+      pointer-events: none;
+}
+.spacer {
+      height: calc(100vh + 60 * 20px);
+}
+.ladowanie{
+      position: fixed;
+      font-weight: bold;
+      color: var(--brown-light);
+      text-align: center;
+      left: 50%;
+      bottom: 50%;
+      transform: translate(-50%, -50%);
+}
+header{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+}
+.container{
       margin-top: 50;
       position: fixed;
       text-align: center;
-        top: 96px;
-  left: 50%;
+      top: 96px;
+      left: 50%;
       transform: translateX(-50%);
-  width: 100%;
-  }
+      width: 100%;
+}
