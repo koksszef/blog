@@ -3,11 +3,6 @@
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-html, body {
-  height: 100%;
-  overflow: hidden;
-}
-
 #scrollArea {
   height: 100vh;
   overflow-y: scroll;
@@ -85,11 +80,8 @@ let currentFrame = 0;
 // resize canvas to device pixels
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 resizeCanvas();
@@ -179,29 +171,3 @@ preloadImages();
 
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
