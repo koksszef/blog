@@ -22,6 +22,7 @@
       posts.forEach(p => {
       let thumbnailHTML = '';
       if (posts.thumbnail) {
+        console.log("Hello world!"); 
         thumbnailHTML = `<div class="thumb"><img src="${post.thumbnail}" alt="Miniaturka ${post.title}"></div>`;
       }
       c.innerHTML += `
@@ -37,6 +38,7 @@
 </body>
 
 </html>
+
 
 
 
