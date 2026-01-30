@@ -2,62 +2,17 @@
 <html lang="pl">
 <head>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-  canvas {
-      margin: 50px auto 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    position: fixed;
-    width: 70vw;
-    height: 70vh;
-    pointer-events: none;
-  }
-  .spacer {
-    height: calc(100vh + 60 * 20px);
-  }
-  .ladowanie{
-    position: fixed;
-    font-weight: bold;
-    color: var(--brown-light);
-    text-align: center;
-          left: 50%;
-    bottom: 50%;
-    transform: translate(-50%, -50%);
-  }
-  header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  }
-  .container{
-      margin-top: 50;
-      position: fixed;
-      text-align: center;
-        top: 96px;
-  left: 50%;
-      transform: translateX(-50%);
-  width: 100%;
-  }
-        
-</style>
+    <link rel="stylesheet" href="/css/animation.css">
 </head>
 <body>
     <script src="/js/header.js"></script>
     <div class="container">
-        <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
     <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
-        <canvas id="adsCanvas"></canvas>
-<div class="spacer"></div>
-
-<script>src="/js/animation.js"</script>
-
+    <canvas id="adsCanvas"></canvas>
+    <div class="spacer"></div>
+    <script>src="/js/animation.js"</script>
     <script src="/js/footer.js"></script>
 </body>
-
-
 </html>
