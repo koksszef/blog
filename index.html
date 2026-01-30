@@ -2,6 +2,20 @@
 <html lang="pl">
 <head>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .spacer {
+    height: 2000px; /* controls scroll length */
+  }
+</style>
 </head>
 <body>
     <script src="/js/header.js"></script>
@@ -9,11 +23,114 @@
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
+    <canvas id="adsCanvas"></canvas>
+<div class="spacer"></div>
+
+<script>
+const canvas = document.getElementById("adsCanvas");
+const ctx = canvas.getContext("2d");
+
+// ====== CONFIG ======
+const frameCount = 60;
+const imagePath = "/frames/";
+const fileExtension = ".png";
+const padLength = 4; // frame_0001.jpg
+// ====================
+
+const images = [];
+let loadedImages = 0;
+let currentFrame = 0;
+
+// resize canvas to device pixels
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeCanvas();
+
+// preload images
+function preloadImages() {
+  for (let i = 1; i <= frameCount; i++) {
+    const img = new Image();
+    img.src =
+      imagePath +
+      String(i).padStart(padLength, "0") +
+      fileExtension;
+
+    img.onload = () => {
+      loadedImages++;
+      if (loadedImages === frameCount) {
+        drawFrame(0);
+      }
+    };
+    images.push(img);
+  }
+}
+
+function drawFrame(index) {
+  const img = images[index];
+  if (!img) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // contain image in canvas
+  const scale = Math.max(
+    canvas.width / img.width,
+    canvas.height / img.height
+  );
+
+  const x = (canvas.width - img.width * scale) / 2;
+  const y = (canvas.height - img.height * scale) / 2;
+
+  ctx.drawImage(
+    img,
+    x,
+    y,
+    img.width * scale,
+    img.height * scale
+  );
+}
+
+// scroll handler
+let ticking = false;
+
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const maxScroll =
+        document.body.scrollHeight - window.innerHeight;
+
+      const scrollFraction =
+        window.scrollY / maxScroll;
+
+      currentFrame = Math.min(
+        frameCount - 1,
+        Math.floor(scrollFraction * frameCount)
+      );
+
+      drawFrame(currentFrame);
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+// resize handler
+window.addEventListener("resize", () => {
+  resizeCanvas();
+  drawFrame(currentFrame);
+});
+
+preloadImages();
+</script>
     <script src="/js/footer.js"></script>
 </body>
 
 
 </html>
+
 
 
 
