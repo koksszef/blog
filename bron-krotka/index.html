@@ -19,8 +19,13 @@
       function render(posts) {
       const c = document.getElementById('short-posts');
       posts.forEach(p => {
+      let thumbnailHTML = '';
+      if (p.thumbnail) {
+        thumbnailHTML = `<div class="thumb"><img src="${p.thumbnail}" alt="Miniaturka ${p.title}"></div>`;
+      }
       c.innerHTML += `
       <div class="post-card">
+      ${thumbnailHTML}
       <h3>${p.title}</h3>
       <a href="${"../"+p.path}">Czytaj więcej</a>
       </div>`;
@@ -32,6 +37,7 @@
 
 
 </html>
+
 
 
 
