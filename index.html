@@ -5,36 +5,24 @@
     <style>
   canvas {
     position: fixed;
-    top: 0;
+    top: 10%;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     pointer-events: none;
-  }
-  .animation{
-    width: 70%;
-    height: 70%;
-    margin: 20%;
   }
   .spacer {
     height: 2000px; /* controls scroll length */
   }
-  .animation_header{
-    position: fixed;
-  }
 </style>
 </head>
 <body>
-    <div class="animation_header">
     <script src="/js/header.js"></script>
     <div class="container">
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
-    </div>
-    <div class="animation">
         <canvas id="adsCanvas"></canvas>
-    </div>
 <div class="spacer"></div>
 
 <script>
@@ -141,6 +129,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
