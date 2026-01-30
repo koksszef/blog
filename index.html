@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <style>
   canvas {
+      margin: 250px auto 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -14,7 +15,7 @@
     pointer-events: none;
   }
   .spacer {
-    height: 8000px; /* controls scroll length */
+    height: calc(100vh + 60 * 5px);
   }
   .ladowanie{
     position: fixed;
@@ -74,23 +75,25 @@ window.addEventListener("DOMContentLoaded", () => {
   let loadedImages = 0;
   let currentFrame = 0;
 
-  function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
 
-    let cssWidth = window.innerWidth * 0.7;
-    let cssHeight = window.innerHeight * 0.7;
+  // Full width/height of viewport, scaled down slightly
+  let cssWidth = Math.min(window.innerWidth, window.innerWidth * 0.7);
+  let cssHeight = window.innerHeight * 0.7;
 
-    if (cssWidth * dpr > maxCanvasSize) cssWidth = maxCanvasSize / dpr;
-    if (cssHeight * dpr > maxCanvasSize) cssHeight = maxCanvasSize / dpr;
+  // Respect maxCanvasSize
+  if (cssWidth * dpr > maxCanvasSize) cssWidth = maxCanvasSize / dpr;
+  if (cssHeight * dpr > maxCanvasSize) cssHeight = maxCanvasSize / dpr;
 
-    canvas.width = cssWidth * dpr;
-    canvas.height = cssHeight * dpr;
+  canvas.width = cssWidth * dpr;
+  canvas.height = cssHeight * dpr;
 
-    canvas.style.width = cssWidth + "px";
-    canvas.style.height = cssHeight + "px";
+  canvas.style.width = cssWidth + "px";
+  canvas.style.height = cssHeight + "px";
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
 
   function drawFrame(index) {
     const img = images[index];
@@ -160,6 +163,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 </html>
+
 
 
 
