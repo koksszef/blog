@@ -5,12 +5,12 @@
     <style>
   canvas {
     left: 50%;
-    bottom: 5%;
+    bottom: 25%;
     transform: translateX(-50%);
     display: block;
     position: fixed;
-    width: 70%;
-    height: 70%;
+    width: 70vw;
+    height: 70vh;
     pointer-events: none;
   }
   .spacer {
@@ -45,8 +45,11 @@ let currentFrame = 0;
 // resize canvas to device pixels
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
+  const rect = canvas.getBoundingClientRect();
+
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 resizeCanvas();
@@ -131,6 +134,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
