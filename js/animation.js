@@ -5,7 +5,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const ctx = canvas.getContext("2d");
   const loader = document.getElementById("loader");
-
+  console.log("Canvas:", canvas);
+console.log("Loader:", loader);
   // ===== CONFIG =====
   const frameCount = 60;
   const imagePath = "/frames/";
