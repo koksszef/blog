@@ -142,14 +142,18 @@ function drawFrame(index) {
     }
   }
 
-  window.addEventListener("scroll", () => {
-    const scrollTop = window.scrollY;
-    const maxScroll = document.body.scrollHeight - window.innerHeight;
-    const scrollFraction = scrollTop / maxScroll;
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
 
-    currentFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
-    drawFrame(currentFrame);
-  });
+  const spacer = document.querySelector('.spacer');
+  const maxScroll = spacer.offsetHeight - window.innerHeight;
+
+  // clamp maxScroll to > 0 to avoid division by zero
+  const scrollFraction = maxScroll > 0 ? scrollTop / maxScroll : 0;
+
+  currentFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
+  drawFrame(currentFrame);
+});
 
   window.addEventListener("resize", () => {
     resizeCanvas();
@@ -168,6 +172,7 @@ function drawFrame(index) {
 
 
 </html>
+
 
 
 
