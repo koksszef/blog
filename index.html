@@ -21,27 +21,29 @@
     color: var(--brown-light);
     text-align: center;
   }
-  header{
-    position: fixed;
-        top: 0;
-  left: 0;
-  width: 100%;
+  .fixed-ui{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
   }
- .section-title{
-     position: fixed;
-       top: 0;
-  left: 0;
-  width: 100%;
- }
+
 </style>
 </head>
 <body>
+    <div class="fixed-ui">
     <script src="/js/header.js"></script>
     <div class="container">
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
     <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
+    </div>
         <canvas id="adsCanvas"></canvas>
 <div class="spacer"></div>
 
@@ -155,6 +157,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
