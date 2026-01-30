@@ -54,109 +54,122 @@
 <div class="spacer"></div>
 
 <script>
-const canvas = document.getElementById("adsCanvas");
-const ctx = canvas.getContext("2d");
-const loader = document.getElementById("loader");
+window.addEventListener("DOMContentLoaded", () => {
 
-// ===== CONFIG =====
-const frameCount = 60;
-const imagePath = "/frames/";
-const fileExtension = ".png";
-const padLength = 4; // frame_0001.png
-const maxCanvasSize = 2048; // safe maximum for mobile
-// ==================
+  const canvas = document.getElementById("adsCanvas");
+  if (!canvas) {
+      console.error("Canvas not found!");
+      return;
+  }
+  const ctx = canvas.getContext("2d");
+  const loader = document.getElementById("loader");
 
-const images = [];
-let loadedImages = 0;
-let currentFrame = 0;
+  // ===== CONFIG =====
+  const frameCount = 60;
+  const imagePath = "/frames/";
+  const fileExtension = ".png";
+  const padLength = 4;
+  const maxCanvasSize = 2048; // mobile safe
+  // ==================
 
-// Check GPU/canvas max size
-function logCanvasLimits() {
+  const images = [];
+  let loadedImages = 0;
+  let currentFrame = 0;
+
+  // Log max texture size (GPU limit)
+  function logCanvasLimits() {
     const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
     if (gl) {
-        const maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-        console.log("Max WebGL texture size:", maxTexture);
+      const maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      console.log("Max WebGL texture size:", maxTexture);
     } else {
-        console.warn("WebGL not available. Cannot check max texture size.");
+      console.warn("WebGL not available. Cannot check max texture size.");
     }
-}
+  }
 
-// Resize canvas safely
-function resizeCanvas() {
+  // Resize canvas safely
+  function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
-    let width = window.innerWidth * 0.7;
-    let height = window.innerHeight * 0.7;
+
+    let cssWidth = window.innerWidth * 0.7;
+    let cssHeight = window.innerHeight * 0.7;
 
     // Clamp to maxCanvasSize
-    if (width * dpr > maxCanvasSize) width = maxCanvasSize / dpr;
-    if (height * dpr > maxCanvasSize) height = maxCanvasSize / dpr;
+    if (cssWidth * dpr > maxCanvasSize) cssWidth = maxCanvasSize / dpr;
+    if (cssHeight * dpr > maxCanvasSize) cssHeight = maxCanvasSize / dpr;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
+    canvas.width = cssWidth * dpr;
+    canvas.height = cssHeight * dpr;
+
+    canvas.style.width = cssWidth + "px";
+    canvas.style.height = cssHeight + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    console.log("Canvas resized:", canvas.width, canvas.height, "DPR:", dpr);
-}
+    console.log("Canvas resized:", canvas.width, canvas.height, "CSS:", cssWidth, cssHeight, "DPR:", dpr);
+  }
 
-// Draw frame
-function drawFrame(index) {
+  // Draw a frame centered & scaled
+  function drawFrame(index) {
     const img = images[index];
     if (!img) {
-        console.warn("No image for frame", index);
-        return;
+      console.warn("No image for frame", index);
+      return;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-    const x = (canvas.width - img.width * scale) / 2;
-    const y = (canvas.height - img.height * scale) / 2;
+    const cssWidth = canvas.width / (window.devicePixelRatio || 1);
+    const cssHeight = canvas.height / (window.devicePixelRatio || 1);
+
+    const scale = Math.min(cssWidth / img.width, cssHeight / img.height);
+    const x = (cssWidth - img.width * scale) / 2;
+    const y = (cssHeight - img.height * scale) / 2;
 
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
-    console.log("Drawing frame", index, "Image size:", img.width, img.height, "Scale:", scale);
-}
+    console.log("Drawing frame", index, "scale", scale, "x:", x, "y:", y);
+  }
 
-// Preload images with decode
-function preloadImages() {
+  // Preload images safely
+  function preloadImages() {
     for (let i = 1; i <= frameCount; i++) {
-        const img = new Image();
-        img.src = imagePath + String(i).padStart(padLength, "0") + fileExtension;
+      const img = new Image();
+      img.src = imagePath + String(i).padStart(padLength, "0") + fileExtension;
 
-        img.onload = () => {
-            loadedImages++;
-            loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
+      img.onload = () => {
+        loadedImages++;
+        loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
 
-            if (img.decode) {
-                img.decode().then(() => {
-                    console.log("Image loaded & decoded:", img.src);
-                    if (loadedImages === frameCount) {
-                        loader.style.display = "none";
-                        drawFrame(0);
-                        console.log("All images loaded. First frame drawn.");
-                    }
-                }).catch(err => console.error("Decode error:", img.src, err));
-            } else {
-                console.log("Image loaded (no decode support):", img.src);
-                if (loadedImages === frameCount) {
-                    loader.style.display = "none";
-                    drawFrame(0);
-                    console.log("All images loaded. First frame drawn.");
-                }
+        if (img.decode) {
+          img.decode().then(() => {
+            console.log("Image loaded & decoded:", img.src);
+            if (loadedImages === frameCount) {
+              loader.style.display = "none";
+              drawFrame(0);
+              console.log("All images loaded. First frame drawn.");
             }
-        };
+          }).catch(err => console.error("Decode error:", img.src, err));
+        } else {
+          console.log("Image loaded (no decode support):", img.src);
+          if (loadedImages === frameCount) {
+            loader.style.display = "none";
+            drawFrame(0);
+            console.log("All images loaded. First frame drawn.");
+          }
+        }
+      };
 
-        img.onerror = () => {
-            console.error("Failed to load image:", img.src);
-        };
+      img.onerror = () => {
+        console.error("Failed to load image:", img.src);
+      };
 
-        images.push(img);
+      images.push(img);
     }
-}
+  }
 
-// Scroll handler
-window.addEventListener("scroll", () => {
+  // Scroll handler
+  window.addEventListener("scroll", () => {
     const scrollTop = window.scrollY;
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     const scrollFraction = scrollTop / maxScroll;
@@ -166,21 +179,21 @@ window.addEventListener("scroll", () => {
     console.log("ScrollY:", scrollTop, "MaxScroll:", maxScroll, "ScrollFraction:", scrollFraction, "CurrentFrame:", currentFrame);
 
     drawFrame(currentFrame);
-});
+  });
 
-// Resize handler
-window.addEventListener("resize", () => {
+  // Resize handler
+  window.addEventListener("resize", () => {
     console.log("Window resized:", window.innerWidth, window.innerHeight);
     resizeCanvas();
     drawFrame(currentFrame);
-});
+  });
 
-// Initial setup
-window.addEventListener("load", () => {
-    console.log("Window loaded");
-    logCanvasLimits();
-    resizeCanvas();
-    preloadImages();
+  // Initial setup
+  console.log("Window loaded");
+  logCanvasLimits();
+  resizeCanvas();
+  preloadImages();
+
 });
 </script>
     <script src="/js/footer.js"></script>
@@ -188,5 +201,6 @@ window.addEventListener("load", () => {
 
 
 </html>
+
 
 
