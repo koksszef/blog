@@ -18,10 +18,11 @@
       
       function render(posts) {
       const c = document.getElementById('long-posts');
+      posts.sort((a, b) => b.number - a.number);
       posts.forEach(p => {
       let thumbnailHTML = '';
       if (posts.thumbnail) {
-        thumbnailHTML = `<img src="${posts.thumbnail}" alt="Miniaturka ${posts.title}">`;
+        thumbnailHTML = `<div class="thumb"><img src="${post.thumbnail}" alt="Miniaturka ${post.title}"></div>`;
       }
       c.innerHTML += `
       <div class="post-card">
@@ -36,6 +37,7 @@
 </body>
 
 </html>
+
 
 
 
