@@ -24,12 +24,14 @@
         <!-- Treść strony -->
         <h2 class="section-title">bronpalna-blog.pl</h2>
     </div>
+    <div id="loader" class="section-title">Ładowanie zdjęć…</div>
         <canvas id="adsCanvas"></canvas>
 <div class="spacer"></div>
 
 <script>
 const canvas = document.getElementById("adsCanvas");
 const ctx = canvas.getContext("2d");
+const loader = document.getElementById("loader");
 
 // ====== CONFIG ======
 const frameCount = 60;
@@ -65,7 +67,9 @@ function preloadImages() {
 
     img.onload = () => {
       loadedImages++;
+      loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
       if (loadedImages === frameCount) {
+        loader.style.display = "none";
         drawFrame(0);
       }
     };
@@ -134,6 +138,7 @@ preloadImages();
 
 
 </html>
+
 
 
 
