@@ -1,0 +1,110 @@
+window.addEventListener("DOMContentLoaded", () => {
+
+  const canvas = document.getElementById("adsCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  const loader = document.getElementById("loader");
+
+  // ===== CONFIG =====
+  const frameCount = 60;
+  const imagePath = "/frames/";
+  const fileExtension = ".png";
+  const padLength = 4;
+  const maxCanvasSize = 2048; // mobile safe
+  // ==================
+
+  const images = [];
+  let loadedImages = 0;
+  let currentFrame = 0;
+
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+
+  // Full width/height of viewport, scaled down slightly
+  let cssWidth = Math.min(window.innerWidth, window.innerWidth * 0.7);
+  let cssHeight = window.innerHeight * 0.7;
+
+  // Respect maxCanvasSize
+  if (cssWidth * dpr > maxCanvasSize) cssWidth = maxCanvasSize / dpr;
+  if (cssHeight * dpr > maxCanvasSize) cssHeight = maxCanvasSize / dpr;
+
+  canvas.width = cssWidth * dpr;
+  canvas.height = cssHeight * dpr;
+
+  canvas.style.width = cssWidth + "px";
+  canvas.style.height = cssHeight + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+function drawFrame(index) {
+  const img = images[index];
+  if (!img) return;
+
+  // Reset transform to identity before clearing
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const cssWidth = canvas.width / (window.devicePixelRatio || 1);
+  const cssHeight = canvas.height / (window.devicePixelRatio || 1);
+
+  const scale = Math.min(cssWidth / img.width, cssHeight / img.height);
+  const x = (cssWidth - img.width * scale) / 2;
+  const y = (cssHeight - img.height * scale) / 2;
+
+  // Reapply transform for HiDPI rendering
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+}
+
+  function preloadImages() {
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      img.src = imagePath + String(i).padStart(padLength, "0") + fileExtension;
+
+      img.onload = () => {
+        loadedImages++;
+        if (loader) loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
+
+        if (img.decode) {
+          img.decode().finally(() => {
+            if (loadedImages === frameCount) {
+              if (loader) loader.style.display = "none";
+              drawFrame(0);
+            }
+          });
+        } else if (loadedImages === frameCount) {
+          if (loader) loader.style.display = "none";
+          drawFrame(0);
+        }
+      };
+
+      images.push(img);
+    }
+  }
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY;
+
+  const spacer = document.querySelector('.spacer');
+  const maxScroll = spacer.offsetHeight - window.innerHeight;
+
+  // clamp maxScroll to > 0 to avoid division by zero
+  const scrollFraction = maxScroll > 0 ? scrollTop / maxScroll : 0;
+
+  currentFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
+  drawFrame(currentFrame);
+});
+
+  window.addEventListener("resize", () => {
+    resizeCanvas();
+    drawFrame(currentFrame);
+  });
+
+  // Initial setup
+  resizeCanvas();
+  preloadImages();
+
+});
