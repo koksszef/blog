@@ -1,158 +1,130 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <link rel="stylesheet" href="/css/style.css">
-    <style>
-  canvas {
-    left: 50%;
-    bottom: 8%;
-    transform: translateX(-50%);
-    display: block;
-    position: fixed;
-    width: 70vw;
-    height: 70vh;
-    pointer-events: none;
-  }
-  .spacer {
-    height: 6000px; /* controls scroll length */
-  }
-  .ladowanie{
-    position: fixed;
-    font-weight: bold;
-    color: var(--brown-light);
-    text-align: center;
-          left: 50%;
-    bottom: 50%;
-    transform: translate(-50%, -50%);
-  }
-  header{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  }
-  .container{
-      margin-top: 50;
-      position: fixed;
-      text-align: center;
-        top: 96px;
-  left: 50%;
-      transform: translateX(-50%);
-  width: 100%;
-  }
-        
-</style>
-</head>
-<body>
-    <script src="/js/header.js"></script>
-    <div class="container">
-        <!-- Treść strony -->
-        <h2 class="section-title">bronpalna-blog.pl</h2>
-    </div>
-    <div id="loader" class="ladowanie">Ładowanie zdjęć…</div>
-        <canvas id="adsCanvas"></canvas>
-<div class="spacer"></div>
-
 <script>
 const canvas = document.getElementById("adsCanvas");
 const ctx = canvas.getContext("2d");
 const loader = document.getElementById("loader");
 
-// ====== CONFIG ======
+// ===== CONFIG =====
 const frameCount = 60;
 const imagePath = "/frames/";
 const fileExtension = ".png";
-const padLength = 4; // frame_0001.jpg
-// ====================
+const padLength = 4; // frame_0001.png
+const maxCanvasSize = 2048; // safe maximum for mobile
+// ==================
 
 const images = [];
 let loadedImages = 0;
 let currentFrame = 0;
 
-// resize canvas to device pixels
-function resizeCanvas() {
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-resizeCanvas();
-
-// preload images
-function preloadImages() {
-  for (let i = 1; i <= frameCount; i++) {
-    const img = new Image();
-    img.src =
-      imagePath +
-      String(i).padStart(padLength, "0") +
-      fileExtension;
-
-img.decode().then(() => {
-    loadedImages++;
-    loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
-    if (loadedImages === frameCount) {
-        loader.style.display = "none";
-        drawFrame(0);
+// Check GPU/canvas max size
+function logCanvasLimits() {
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (gl) {
+        const maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+        console.log("Max WebGL texture size:", maxTexture);
+    } else {
+        console.warn("WebGL not available. Cannot check max texture size.");
     }
-});
-    images.push(img);
-  }
 }
 
+// Resize canvas safely
+function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    let width = window.innerWidth * 0.7;
+    let height = window.innerHeight * 0.7;
+
+    // Clamp to maxCanvasSize
+    if (width * dpr > maxCanvasSize) width = maxCanvasSize / dpr;
+    if (height * dpr > maxCanvasSize) height = maxCanvasSize / dpr;
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    console.log("Canvas resized:", canvas.width, canvas.height, "DPR:", dpr);
+}
+
+// Draw frame
 function drawFrame(index) {
-  const img = images[index];
-  if (!img) return;
+    const img = images[index];
+    if (!img) {
+        console.warn("No image for frame", index);
+        return;
+    }
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // contain image in canvas
-  const scale = Math.min(
-    canvas.width / img.width,
-    canvas.height / img.height
-  );
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    const x = (canvas.width - img.width * scale) / 2;
+    const y = (canvas.height - img.height * scale) / 2;
 
-  const x = (canvas.width - img.width * scale) / 2;
-  const y = (canvas.height - img.height * scale) / 2;
+    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
-  ctx.drawImage(
-    img,
-    x,
-    y,
-    img.width * scale,
-    img.height * scale
-  );
+    console.log("Drawing frame", index, "Image size:", img.width, img.height, "Scale:", scale);
 }
 
-// scroll handler
-let ticking = false;
+// Preload images with decode
+function preloadImages() {
+    for (let i = 1; i <= frameCount; i++) {
+        const img = new Image();
+        img.src = imagePath + String(i).padStart(padLength, "0") + fileExtension;
 
+        img.onload = () => {
+            loadedImages++;
+            loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
+
+            if (img.decode) {
+                img.decode().then(() => {
+                    console.log("Image loaded & decoded:", img.src);
+                    if (loadedImages === frameCount) {
+                        loader.style.display = "none";
+                        drawFrame(0);
+                        console.log("All images loaded. First frame drawn.");
+                    }
+                }).catch(err => console.error("Decode error:", img.src, err));
+            } else {
+                console.log("Image loaded (no decode support):", img.src);
+                if (loadedImages === frameCount) {
+                    loader.style.display = "none";
+                    drawFrame(0);
+                    console.log("All images loaded. First frame drawn.");
+                }
+            }
+        };
+
+        img.onerror = () => {
+            console.error("Failed to load image:", img.src);
+        };
+
+        images.push(img);
+    }
+}
+
+// Scroll handler
 window.addEventListener("scroll", () => {
-  const scrollTop = window.scrollY;
-  const maxScroll = document.body.scrollHeight - window.innerHeight;
-  const scrollFraction = scrollTop / maxScroll;
+    const scrollTop = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const scrollFraction = scrollTop / maxScroll;
 
-  currentFrame = Math.min(
-    frameCount - 1,
-    Math.floor(scrollFraction * frameCount)
-  );
+    currentFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
 
-  drawFrame(currentFrame);
+    console.log("ScrollY:", scrollTop, "MaxScroll:", maxScroll, "ScrollFraction:", scrollFraction, "CurrentFrame:", currentFrame);
+
+    drawFrame(currentFrame);
 });
 
-// resize handler
+// Resize handler
 window.addEventListener("resize", () => {
-  resizeCanvas();
-  drawFrame(currentFrame);
+    console.log("Window resized:", window.innerWidth, window.innerHeight);
+    resizeCanvas();
+    drawFrame(currentFrame);
 });
 
-preloadImages();
+// Initial setup
+window.addEventListener("load", () => {
+    console.log("Window loaded");
+    logCanvasLimits();
+    resizeCanvas();
+    preloadImages();
+});
 </script>
-    <script src="/js/footer.js"></script>
-</body>
-
-
-</html>
-
