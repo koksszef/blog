@@ -57,10 +57,8 @@
 window.addEventListener("DOMContentLoaded", () => {
 
   const canvas = document.getElementById("adsCanvas");
-  if (!canvas) {
-      console.error("Canvas not found!");
-      return;
-  }
+  if (!canvas) return;
+
   const ctx = canvas.getContext("2d");
   const loader = document.getElementById("loader");
 
@@ -76,25 +74,12 @@ window.addEventListener("DOMContentLoaded", () => {
   let loadedImages = 0;
   let currentFrame = 0;
 
-  // Log max texture size (GPU limit)
-  function logCanvasLimits() {
-    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-    if (gl) {
-      const maxTexture = gl.getParameter(gl.MAX_TEXTURE_SIZE);
-      console.log("Max WebGL texture size:", maxTexture);
-    } else {
-      console.warn("WebGL not available. Cannot check max texture size.");
-    }
-  }
-
-  // Resize canvas safely
   function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
 
     let cssWidth = window.innerWidth * 0.7;
     let cssHeight = window.innerHeight * 0.7;
 
-    // Clamp to maxCanvasSize
     if (cssWidth * dpr > maxCanvasSize) cssWidth = maxCanvasSize / dpr;
     if (cssHeight * dpr > maxCanvasSize) cssHeight = maxCanvasSize / dpr;
 
@@ -105,17 +90,11 @@ window.addEventListener("DOMContentLoaded", () => {
     canvas.style.height = cssHeight + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    console.log("Canvas resized:", canvas.width, canvas.height, "CSS:", cssWidth, cssHeight, "DPR:", dpr);
   }
 
-  // Draw a frame centered & scaled
   function drawFrame(index) {
     const img = images[index];
-    if (!img) {
-      console.warn("No image for frame", index);
-      return;
-    }
+    if (!img) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -127,11 +106,8 @@ window.addEventListener("DOMContentLoaded", () => {
     const y = (cssHeight - img.height * scale) / 2;
 
     ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-
-    console.log("Drawing frame", index, "scale", scale, "x:", x, "y:", y);
   }
 
-  // Preload images safely
   function preloadImages() {
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
@@ -139,68 +115,52 @@ window.addEventListener("DOMContentLoaded", () => {
 
       img.onload = () => {
         loadedImages++;
-        loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
+        if (loader) loader.textContent = `Ładowanie zdjęć… ${loadedImages}/${frameCount}`;
 
         if (img.decode) {
-          img.decode().then(() => {
-            console.log("Image loaded & decoded:", img.src);
+          img.decode().finally(() => {
             if (loadedImages === frameCount) {
-              loader.style.display = "none";
+              if (loader) loader.style.display = "none";
               drawFrame(0);
-              console.log("All images loaded. First frame drawn.");
             }
-          }).catch(err => console.error("Decode error:", img.src, err));
-        } else {
-          console.log("Image loaded (no decode support):", img.src);
-          if (loadedImages === frameCount) {
-            loader.style.display = "none";
-            drawFrame(0);
-            console.log("All images loaded. First frame drawn.");
-          }
+          });
+        } else if (loadedImages === frameCount) {
+          if (loader) loader.style.display = "none";
+          drawFrame(0);
         }
-      };
-
-      img.onerror = () => {
-        console.error("Failed to load image:", img.src);
       };
 
       images.push(img);
     }
   }
 
-  // Scroll handler
   window.addEventListener("scroll", () => {
     const scrollTop = window.scrollY;
     const maxScroll = document.body.scrollHeight - window.innerHeight;
     const scrollFraction = scrollTop / maxScroll;
 
     currentFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
-
-    console.log("ScrollY:", scrollTop, "MaxScroll:", maxScroll, "ScrollFraction:", scrollFraction, "CurrentFrame:", currentFrame);
-
     drawFrame(currentFrame);
   });
 
-  // Resize handler
   window.addEventListener("resize", () => {
-    console.log("Window resized:", window.innerWidth, window.innerHeight);
     resizeCanvas();
     drawFrame(currentFrame);
   });
 
   // Initial setup
-  console.log("Window loaded");
-  logCanvasLimits();
   resizeCanvas();
   preloadImages();
 
 });
 </script>
+
     <script src="/js/footer.js"></script>
 </body>
 
 
 </html>
+
 
 
 
