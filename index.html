@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <style>
   canvas {
-      margin: 100px auto 0;
+      margin: 50px auto 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -95,27 +95,26 @@ function resizeCanvas() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-function drawFrame(index) {
-  const img = images[index];
-  if (!img) return;
-
-  // Reset transform before clearing
-  ctx.setTransform(1, 0, 0, 1, 0, 0); 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Apply device pixel ratio scaling
-  const dpr = window.devicePixelRatio || 1;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  const cssWidth = canvas.width / dpr;
-  const cssHeight = canvas.height / dpr;
-
-  const scale = Math.min(cssWidth / img.width, cssHeight / img.height);
-  const x = (cssWidth - img.width * scale) / 2;
-  const y = (cssHeight - img.height * scale) / 2;
-
-  ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-}
+      function drawFrame(index) {
+        const img = images[index];
+        if (!img) {
+          console.warn("No image for frame", index);
+          return;
+        }
+    
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        const cssWidth = canvas.width / (window.devicePixelRatio || 1);
+        const cssHeight = canvas.height / (window.devicePixelRatio || 1);
+    
+        const scale = Math.min(cssWidth / img.width, cssHeight / img.height);
+        const x = (cssWidth - img.width * scale) / 2;
+        const y = (cssHeight - img.height * scale) / 2;
+    
+        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    
+        console.log("Drawing frame", index, "scale", scale, "x:", x, "y:", y);
+      }
 
   function preloadImages() {
     for (let i = 1; i <= frameCount; i++) {
@@ -169,6 +168,7 @@ function drawFrame(index) {
 
 
 </html>
+
 
 
 
