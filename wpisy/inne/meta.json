@@ -1,13 +1,14 @@
 [
     {
-      "title": "Inna Broń",
+      "title": "Zapoznanie się z blogiem i jego twórcą",
       "category": "Inne",
-      "path": "/wpisy/inne/post-other-1",
+      "path": "/wpisy/inne/Zapoznanie się z blogiem i jego twórcą",
       "number": "1",
-      "pin": "no",
-      "thumbnail": ""
+      "pin": "yes",
+      "thumbnail": "/wpisy/inne/Zapoznanie się z blogiem i jego twórcą/thumb.jpg"
     }
   ]
+
 
 
 
