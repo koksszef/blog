@@ -58,28 +58,10 @@ function renderPosts(posts) {
       ${thumbnailHTML}
       <h3>${post.title}</h3>
       <p>Kategoria: ${post.category}</p>
-      <p>Wpis #: ${post.number}</p>
+      <p>Wpis: #${post.number}</p>
       <h3></h3>
       <a href="${BASE_URL}${post.path}">Czytaj więcej</a>
     `;
     postsContainer.appendChild(div);
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
